@@ -16,39 +16,9 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 
 
-# PDG ID와 입자 이름 매핑
-def FlagIsOn(status,flag_n) :
-    if status & (1 << (flag_n -1)) : return True
-    else : return False
-
-def isHardProcess(gen) : return FlagIsOn(gen.statusFlags,8)
 
 def beginJob(self, histFile=None, histDirName=None):
         Module.beginJob(self, histFile, histDirName)
-
-def build_tree(gen_parts):
-    """트리 형태로 계보를 구축.gen_parts: 리스트 - 각 항목은 {'pdgId': int, 'genPartIdxMother': int} 형태의 사전"""
-    tree = {}
-    index_to_node = {}
-    # 노드 초기화
-    for idx, part in enumerate(gen_parts):
-        node = {"pdgId": part["pdgId"], "parents": [], "children": [], "eta": part["eta"], "phi": part["phi"]}
-        index_to_node[idx] = node
-        tree[idx] = node
-
-    # 부모-자식 관계 설정
-    for idx, part in enumerate(gen_parts):
-        if isHardProcess(part):
-            mother_indices = part["genPartIdxMother"] if isinstance(part["genPartIdxMother"], list) else [part["genPartIdxMother"]]
-            ## mother가 여러개면 리스트 타입으로 나오고 , 단일이면 정수로 나옴 .
-            for mother_idx in mother_indices:
-                if mother_idx >= 0:  # 유효한 부모인 경우
-                    index_to_node[mother_idx]["children"].append(tree[idx])
-                    tree[idx]["parents"].append(index_to_node[mother_idx])
-
-    # 루트 노드 반환 (부모가 없고 자식이 있는 노드)
-    roots = [node for idx, node in tree.items() if len(node["parents"]) == 0 and len(node["children"]) > 0]
-    return roots
 
 
 
@@ -63,22 +33,29 @@ class ExampleAnalysis(Module):
         self.addObject(ROOT.TH1F("deltaR_dist", "DeltaR Distribution between Two Quarks", 50, 0, 5))
 
     def analyze(self, event):
-        gen_parts = Collection(event, "LHEPart")
+        LHE_parts = Collection(event, "LHEPart")
+        quarks_ud = []
+        quarks_sc = []
         
-        for idx, part in enumerate(gen_parts):
-            # Heavy_neutrino 찾기
-            if part.pdgId == 9900016 and isHardProcess(part):  # Hard Process + PDG ID
-                children_indices = [i for i, p in enumerate(gen_parts) if p.genPartIdxMother == idx]
-                
-                # 자식이 두 개의 쿼크인지 확인
-                quark_indices = [i for i in children_indices if abs(gen_parts[i].pdgId) in [1, 2, 3, 4, 5, 6]]  # u, d, s, c, b, t
-                
-                if len(quark_indices) >= 2:
-                    # 두 쿼크의 Delta R 계산
-                    idx_a, idx_b = quark_indices[0], quark_indices[1]
-                    quark_a, quark_b = gen_parts[idx_a], gen_parts[idx_b]
-                    delta_r=deltaR(quark_a, quark_b)
-                    self.deltaR_dist.Fill(delta_r)
+        for idx, part in enumerate(LHE_parts) :
+            # 쿼크 쌍 찾기 (예: b-쿼크와 반쿼크)
+            if abs(part["pdgId"]) in [1, 2] :  # u, d
+                quarks_ud.append(part)
+            if abs(part["pdgId"]) in [3, 4] : # s, c 쿼크
+                quarks_sc.append(part)
+        
+        # 가능한 쌍(쿼크-반쿼크)으로 deltaR 계산
+        if len(quarks_ud) >1:
+            for i in range(len(quarks_ud)):
+                for j in range(i + 1, len(quarks_ud)):
+                    delta_R_ud = deltaR(quarks_ud[i], quarks_ud[j])
+                    self.deltaR_dist.Fill(delta_R_ud)
+        if len(quarks_sc) >1:
+            for i in range(len(quarks_sc)):
+                for j in range(i + 1, len(quarks_sc)):
+                    delta_R_sc = deltaR(quarks_sc[i], quarks_sc[j])
+                    self.deltaR_dist.Fill(delta_R_sc)
+
 
         return True
 
