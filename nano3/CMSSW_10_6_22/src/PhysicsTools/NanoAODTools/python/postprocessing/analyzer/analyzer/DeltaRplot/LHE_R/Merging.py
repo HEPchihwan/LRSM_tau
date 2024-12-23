@@ -39,7 +39,7 @@ combined_W4000N2000 = TH1F("W4000N2000", "W4000N2000", 50, 0, 5)
 combined_W4000N3900 = TH1F("W4000N3900", "W4000N3900", 50, 0, 5)
 
 
-
+gStyle.SetHistTopMargin(0.2)  # 히스토그램 위 여백 설정
 # 히스토그램 색상 설정
 combined_W1000N100.SetLineColor(kRed)
 combined_W1000N500.SetLineColor(kGreen)
@@ -204,6 +204,18 @@ def draw_histograms(canvas, hists, title):
     canvas.Update()
 
 ## 각 샘플 갯수 다르므로 noramlization
+combined_W1000N100.GetXaxis().SetRangeUser(0.1, 5)
+combined_W1000N500.GetXaxis().SetRangeUser(0.1, 5)
+combined_W1000N900.GetXaxis().SetRangeUser(0.1, 5)
+
+combined_W2000N100.GetXaxis().SetRangeUser(0.1, 5)
+combined_W2000N1000.GetXaxis().SetRangeUser(0.1, 5)
+combined_W2000N1900.GetXaxis().SetRangeUser(0.1, 5)
+
+combined_W4000N100.GetXaxis().SetRangeUser(0.1, 5)
+combined_W4000N2000.GetXaxis().SetRangeUser(0.1, 5)
+combined_W4000N3900.GetXaxis().SetRangeUser(0.1, 5)
+
 
 # WR1000 그룹 히스토그램 그리기
 combined_W1000N100.Scale(1/combined_W1000N100.Integral())
@@ -238,6 +250,7 @@ draw_histograms(
 )
 
 # 저장 및 출력
+# X축 범위 제한
 
 
 
