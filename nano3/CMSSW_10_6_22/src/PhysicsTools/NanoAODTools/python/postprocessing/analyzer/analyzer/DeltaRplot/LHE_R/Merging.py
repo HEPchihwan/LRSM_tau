@@ -40,6 +40,8 @@ combined_W4000N3900 = TH1F("W4000N3900", "W4000N3900", 50, 0, 5)
 
 
 gStyle.SetHistTopMargin(0.2)  # 히스토그램 위 여백 설정
+gStyle.SetOptStat(0)  # 통계 상자 제거
+
 # 히스토그램 색상 설정
 combined_W1000N100.SetLineColor(kRed)
 combined_W1000N500.SetLineColor(kGreen)
@@ -186,24 +188,59 @@ canvas_WR1000 = TCanvas("canvas_WR1000", "WR1000 Comparison", 800, 600)
 canvas_WR2000 = TCanvas("canvas_WR2000", "WR2000 Comparison", 800, 600)
 canvas_WR4000 = TCanvas("canvas_WR4000", "WR4000 Comparison", 800, 600)
 
+
 # 히스토그램 겹쳐 그리기 설정
 def draw_histograms(canvas, hists, title):
+    """
+    canvas   : TCanvas 객체
+    hists    : 그릴 히스토그램 리스트 (예: [hist1, hist2, hist3])
+    title    : 첫 번째 히스토그램에 표시할 Title
+    """
+    # 1) 캔버스 설정
     canvas.cd()
-    legend = TLegend(0.7, 0.7, 0.9, 0.9)
+    canvas.SetGrid(1, 1)  # (X축, Y축) 격자
+    # 필요 시 canvas.Clear() 등으로 초기화 가능
+
+    # 2) 레전드 생성
+    # 위치를 넓게 잡아서 히스토그램이 레전드를 가리지 않도록 함
+    legend = TLegend(0.55, 0.65, 0.88, 0.88)
+    legend.SetTextSize(0.03)
+    legend.SetBorderSize(1)    # 테두리 있음 (0이면 테두리 없음)
+    legend.SetFillStyle(1001)  # 레전드 박스 채우기 (0으로 하면 투명)
+    legend.SetFillColor(kWhite)  # 하얀 배경
+    legend.SetTextColor(kBlack)  # 검정색 글자
+
+    # 3) 히스토그램 Draw 및 레전드 등록
     first_hist = True
-    for hist in hists:
+    for i, hist in enumerate(hists):
+        # (3-1) 히스토그램 그리기
         if first_hist:
-            hist.SetTitle(title)
-            hist.Draw("HIST")  # 첫 번째 히스토그램 그리기
+            hist.SetTitle(title)     # 캔버스 윗부분에 표시될 제목; "X축; Y축" 형식
+            hist.Draw("HIST")        # 첫 히스토그램
             first_hist = False
         else:
-            hist.Draw("HIST SAME")  # 다른 히스토그램 겹쳐서 그리기
-        legend.AddEntry(hist, hist.GetName(), "l")
-    
-    legend.Draw()
-    canvas.Update()
+            hist.Draw("HIST SAME")   # 겹쳐 그리기
 
+        # (3-2) 레전드에 항목 추가 (Draw 후에!)
+        if i == 0:
+            legend.AddEntry(hist, "mN = 100 (GeV)", "l")  # "l" -> 선 스타일
+            
+        elif i == 1:
+            legend.AddEntry(hist, "mN = mWR / 2 (GeV)", "l")
+            
+        elif i == 2:
+            legend.AddEntry(hist, "mN = mWR - 100 (GeV)", "l")
+            
+
+    # 4) 레전드 그리기
+    legend.Draw("SAME")  # "SAME" 옵션으로 캔버스에 겹쳐 그림
+
+    # 5) 캔버스 업데이트
+    canvas.Update()
+    print("Number of legend entries:", legend.GetNRows())
 ## 각 샘플 갯수 다르므로 noramlization
+
+# X축 범위 제한
 combined_W1000N100.GetXaxis().SetRangeUser(0.1, 5)
 combined_W1000N500.GetXaxis().SetRangeUser(0.1, 5)
 combined_W1000N900.GetXaxis().SetRangeUser(0.1, 5)
@@ -216,7 +253,6 @@ combined_W4000N100.GetXaxis().SetRangeUser(0.1, 5)
 combined_W4000N2000.GetXaxis().SetRangeUser(0.1, 5)
 combined_W4000N3900.GetXaxis().SetRangeUser(0.1, 5)
 
-
 # WR1000 그룹 히스토그램 그리기
 combined_W1000N100.Scale(1/combined_W1000N100.Integral())
 combined_W1000N500.Scale(1/combined_W1000N500.Integral())
@@ -224,8 +260,10 @@ combined_W1000N900.Scale(1/combined_W1000N900.Integral())
 draw_histograms(
     canvas_WR1000, 
     [combined_W1000N100, combined_W1000N500, combined_W1000N900], 
-    "WR1000 Comparison; Delta R; Events"
+    "WR1000 Comparison; DeltaR(q,q); A.U."
 )
+
+
 
 
 combined_W2000N100.Scale(1/combined_W2000N100.Integral())
@@ -235,7 +273,7 @@ combined_W2000N1900.Scale(1/combined_W2000N1900.Integral())
 draw_histograms(
     canvas_WR2000, 
     [combined_W2000N100, combined_W2000N1000, combined_W2000N1900], 
-    "WR2000 Comparison; Delta R; Events"
+    "WR2000 Comparison; DeltaR(q,q); A.U."
 )
 
 
@@ -246,9 +284,8 @@ combined_W4000N3900.Scale(1/combined_W4000N3900.Integral())
 draw_histograms(
     canvas_WR4000, 
     [combined_W4000N100, combined_W4000N2000, combined_W4000N3900], 
-    "WR4000 Comparison; Delta R; Events"
+    "WR4000 Comparison; DeltaR(q,q); A.U."
 )
-
 # 저장 및 출력
 # X축 범위 제한
 
