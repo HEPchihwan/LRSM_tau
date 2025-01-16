@@ -593,15 +593,37 @@ def plot_heatmaps():
         plt.savefig(os.path.join(output_dir, filename))
         plt.show()
 
+    def draw_heatmap2(data, filename, cmap='plasma'):
+        plt.figure(figsize=(30, 20))
+        cmap = mpl.cm.get_cmap("plasma").copy()  # 복사본 생성
+        cmap.set_bad(color='white')  # 마스킹된 부분을 흰색으로 설정
+        plt.imshow(data, aspect='auto', cmap=cmap, origin='lower',
+                   extent=[ WR_values[0]-250, WR_values[-1]+250, N_values[0]-50, N_values[-1]+50,])
+        
+        cbar = plt.colorbar(pad = 0.01)
+        cbar.ax.tick_params(labelsize=30)  # 컬러바 눈금 폰트 크기 설정
+        cbar.set_label('Triggering rate (%)',fontsize=40)
+
+        yticks = np.arange(500, N_values[-1] + 1, 500)
+        plt.yticks(ticks=yticks, labels=[f"{N_values}" for N_values in yticks], fontsize = 40)
+        ##plt.yticks(ticks=N_values, labels=[f"N{N}" for N in N_values], rotation=90)
+        plt.xticks(ticks=WR_values, labels=[f"{WR}" for WR in WR_values] , fontsize = 40)
+        plt.ylabel(r'$m_{N}$[GeV]', loc = 'top' , fontsize = 40)
+        plt.xlabel(r'$m_{W_{R}}$[GeV]', loc = 'right' , fontsize = 40)
+        plt.tight_layout()
+        
+
+        plt.savefig(os.path.join(output_dir, filename))
+        plt.show()
     # 첫 번째 히트맵: taucut_ratios
-    draw_heatmap(
+    draw_heatmap2(
         masked_data0*100,
         'heatmap_taucut_ratios.png',
         
     )
 
     # 두 번째 히트맵: mutaucut_ratios
-    draw_heatmap(
+    draw_heatmap2(
         masked_data1*100,
         'heatmap_mutaucut_ratios.png',
         
