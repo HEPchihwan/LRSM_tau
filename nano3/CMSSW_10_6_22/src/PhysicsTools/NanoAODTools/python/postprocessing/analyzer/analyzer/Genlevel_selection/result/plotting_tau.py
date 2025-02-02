@@ -9,6 +9,7 @@ l_col = [kRed+1, kGreen+2, kAzure+2]
 # (2) 새로 정의한 사전
 d_plots = {
     "tau_cut":      ["pt","eta"],
+    "sectau":       ["PT","ETA"],
     "jetAK4_cut":   ["pt","eta"],
     "jetAK4_cut_pt_subleading":["pT"],
     "jetAK4_cut_eta_subleading":["etas"],
@@ -23,10 +24,12 @@ d_plots = {
     "tau_cut_mass_AK4":  ["."],
     "tau_cut_mass_AK8_tau": ["q"],
     "cut_mass_AK4":      ["."],
+    "cut_mass_AK8":      ["."],
+    
 }
 
 # 예: 히스토그램 파일들이 있는 디렉토리 (사용 상황에 맞게 수정)
-dirname = "/data6/Users/snuintern1/nano3/CMSSW_10_6_22/src/PhysicsTools/NanoAODTools/python/postprocessing/analyzer/analyzer/Genlevel_selection/result/"
+dirname = "/data6/Users/snuintern1/nano3/CMSSW_10_6_22/src/PhysicsTools/NanoAODTools/python/postprocessing/analyzer/analyzer/Genlevel_selection/result/fig_prisec_alltau_cut/fGen_result_sec_tau_250115/rootfiles"
 
 ################################################################################
 # 메인 루프
@@ -67,6 +70,10 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                     h = f.Get(f"plots/{obj}_pt")
                 if var== "etaeta":
                     h = f.Get(f"plots/{obj}_eta")
+                if var == "PT":
+                    h = f.Get(f"plots/{obj}_pt_leading")
+                if var == "ETA":
+                    h = f.Get(f"plots/{obj}_eta_leading")
                 
 
                 if obj == "tau_cut":
@@ -198,6 +205,36 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                     h.Rebin(10)
                     h.SetTitle("")
                     h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                if obj == "cut_mass_AK8":
+                    #h.SetTitle("Genlevel M_{N} with AK8 jet")
+                    h.GetXaxis().SetTitle("m(j_{AK8})")
+                    
+                    h.SetTitle("")
+                    if mWR == 1000:
+                        h.Rebin(5)
+                        h.GetXaxis().SetRangeUser(0, 300)
+                    if mWR == 2000:
+                        h.Rebin(10)
+                        h.GetXaxis().SetRangeUser(0, 500)
+                        
+                    if mWR == 4000:
+                        h.Rebin(10)
+                        h.GetXaxis().SetRangeUser(0, 800)
+                if obj == "sectau":
+                    if var == "PT":
+                        h.GetXaxis().SetTitle("p_{T} of #tau_{sec}")
+                        h.SetTitle("")
+                        if mWR == 1000:
+                            h.Rebin(10)
+                            h.GetXaxis().SetRangeUser(0, 1000)
+                        if mWR == 2000:
+                            h.Rebin(10)
+                            h.GetXaxis().SetRangeUser(0, 1500)
+                        
+                        if mWR == 4000:
+                            h.Rebin(10)
+                            h.GetXaxis().SetRangeUser(0, 3000)
+
 
 
                 
@@ -239,6 +276,10 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                     h = f.Get(f"plots/{obj}_eta")
                 if var == "AK4_el" or var == "AK4_mu" or var == "AK8_tau":
                     h = f.Get(f"plots/{obj}{var}")
+                if var == "PT":
+                    h = f.Get(f"plots/{obj}_pt_leading")
+                if var == "ETA":
+                    h = f.Get(f"plots/{obj}_eta_leading")
 
                 if not h: 
                     continue
@@ -376,6 +417,36 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                     h.Rebin(10)
                     h.SetTitle("")
                     h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                if obj == "cut_mass_AK8":
+                    #h.SetTitle("Genlevel M_{N} with AK8 jet")
+                    h.GetXaxis().SetTitle("m(j_{AK8})")
+                    
+                    h.SetTitle("")
+                    if mWR == 1000:
+                        h.Rebin(5)
+                        h.GetXaxis().SetRangeUser(0, 300)
+                    if mWR == 2000:
+                        h.Rebin(10)
+                        h.GetXaxis().SetRangeUser(0, 500)
+                        
+                    if mWR == 4000:
+                        h.Rebin(10)
+                        h.GetXaxis().SetRangeUser(0, 800)
+                if obj == "sectau":
+                    if var == "PT":
+                        h.GetXaxis().SetTitle("p_{T} of #tau_{sec}")
+                        h.SetTitle("")
+                        if mWR == 1000:
+                            h.Rebin(10)
+                            h.GetXaxis().SetRangeUser(0, 1000)
+                        if mWR == 2000:
+                            h.Rebin(10)
+                            h.GetXaxis().SetRangeUser(0, 1500)
+                        
+                        if mWR == 4000:
+                            h.Rebin(10)
+                            h.GetXaxis().SetRangeUser(0, 3000)
+                
                 h.GetXaxis().SetTitleSize(0.03)
                 h.GetXaxis().SetTitleOffset(1.5)
 
