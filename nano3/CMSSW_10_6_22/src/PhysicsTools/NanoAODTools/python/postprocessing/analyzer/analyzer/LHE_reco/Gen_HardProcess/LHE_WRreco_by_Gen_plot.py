@@ -8,9 +8,11 @@ l_col = [kRed+1, kGreen+2, kAzure+2]
 
 # (2) 새로 정의한 사전
 d_plots = {
-    "tau_WR_":     ["mass"],
-    "real1tau_WR_": ["mass"],
-    "WR_":         ["mass_real"]
+    "not_using_tau_from_N_":     ["WR_mass"],
+    "using_tau_from_WR_": ["WR_mass"],
+    "onshell_":         ["WR_mass"],
+    "off_shell_":        ["secWR_mass"],
+    "offshell_":        ["FirstWR_mass"]
 }
 
 # 예: 히스토그램 파일들이 있는 디렉토리 (사용 상황에 맞게 수정)
@@ -47,8 +49,8 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                 h = f.Get(f"plots/{obj}{var}")
                 
                 
-                if var == "mass" or var == "mass_real":
-                    h.GetXaxis().SetTitle("WR mass reconstruct")
+                if obj =="not_using_tau_from_N_":
+                    h.GetXaxis().SetTitle("On,Offshell WR Mass Reconstruct")
                     if mWR ==1000: 
                         h.Rebin(10)
                         h.SetTitle("")
@@ -58,7 +60,50 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                         h.Rebin(10)
                         h.SetTitle("")
                         h.GetXaxis().SetRangeUser(0, mWR*1.5)
-
+                
+                if obj =="using_tau_from_WR_":
+                    h.GetXaxis().SetTitle("Onshell WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                
+                if obj =="onshell_":
+                    h.GetXaxis().SetTitle("Onshell WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                
+                if  obj =="off_shell_":
+                    h.GetXaxis().SetTitle("Offshell Second WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                        
+                if obj == "offshell_":
+                    h.GetXaxis().SetTitle("Offshell First WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*3.0)
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*3.0)
 
                 
                 # 안전장치: 혹시 hist가 없으면 continue
@@ -85,8 +130,8 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                 
                 h = f.Get(f"plots/{obj}{var}")
                 
-                if var == "mass" or var == "mass_real":
-                    h.GetXaxis().SetTitle("WR mass reconstruct")
+                if obj =="not_using_tau_from_N_":
+                    h.GetXaxis().SetTitle("On,Offshell First WR Mass Reconstruct")
                     if mWR ==1000: 
                         h.Rebin(10)
                         h.SetTitle("")
@@ -96,6 +141,52 @@ for obj in d_plots:          # 새 dictionary에서 "오브젝트"를 반복
                         h.Rebin(10)
                         h.SetTitle("")
                         h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                
+                if obj =="using_tau_from_WR_":
+                    h.GetXaxis().SetTitle("Onshell First WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                
+                if obj =="onshell_":
+                    h.GetXaxis().SetTitle("Onshell First,Second WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+
+                if  obj =="off_shell_":
+                    h.GetXaxis().SetTitle("Offshell Second WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*1.5)
+                        
+                if obj == "offshell_":
+                    h.GetXaxis().SetTitle("Offshell First WR Mass Reconstruct")
+                    if mWR ==1000:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*3.0)
+                    else:
+                        h.Rebin(10)
+                        h.SetTitle("")
+                        h.GetXaxis().SetRangeUser(0, mWR*3.0)
                         
                 
                 h.GetXaxis().SetTitleSize(0.03)
