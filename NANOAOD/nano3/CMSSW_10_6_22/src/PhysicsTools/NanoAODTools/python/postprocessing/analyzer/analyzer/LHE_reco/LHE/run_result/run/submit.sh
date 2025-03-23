@@ -1,0 +1,9 @@
+condor_submit WR1000N100.jds
+condor_submit WR1000N500.jds
+condor_submit WR1000N900.jds
+condor_submit WR2000N100.jds
+condor_submit WR2000N1000.jds
+condor_submit WR2000N1900.jds
+condor_submit WR4000N100.jds
+condor_submit WR4000N2000.jds
+condor_submit WR4000N3900.jds
