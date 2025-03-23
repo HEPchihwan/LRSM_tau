@@ -10,7 +10,7 @@
   
 
 # SKFLAT ( C++ )
-- folders main code at /analyzer , outputs in /SKFLATOUTPUT , /systemic_err_cal
+- folders main code at SKFLAT/
     -projects :
       1. Tau trigger & Muon Trigger   
     
