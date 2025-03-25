@@ -1,9 +1,0 @@
-executable = /data6/Users/snuintern1/genproductions/bin/MadGraph5_aMCatNLO/gridpack_generation.sh
-arguments = WRtoNLtoLLJJ_WR1500_N1400_NLO /home/snuintern1/SNU_LRSM/K_Factor/WRtoNLtoLLJJ/cards/LO/WRtoNLtoLLJJ_WR1500_N1400_NLO 
-log = /home/snuintern1/SNU_LRSM/K_Factor/WRtoNLtoLLJJ/WR1500_N1400_NLO/run/job.log
-output = /data6/Users/snuintern1/genproductions/data/job$(process).out
-error = /data6/Users/snuintern1/genproductions/data/job$(process).err
-getenv = True
-should_transfer_files = yes
-when_to_transfer_output = on_exit
-queue 
