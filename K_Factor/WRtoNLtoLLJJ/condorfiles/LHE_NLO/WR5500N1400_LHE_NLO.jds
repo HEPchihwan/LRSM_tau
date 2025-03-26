@@ -1,0 +1,11 @@
+executable = /data6/Users/snuintern1/genproductions/bin/MadGraph5_aMCatNLO/WRtoNLtoLLJJ_WR5500N1400_NLO_tarfile/runcmsgrid.sh
+arguments = 10000
+log = /data6/Users/snuintern1/genproductions/data/job.log
+output = /data6/Users/snuintern1/genproductions/data/job$(process).out
+error = /data6/Users/snuintern1/genproductions/data/job$(process).err
+getenv = True
+should_transfer_files = NO
+initialdir = /data6/Users/snuintern1/genproductions/bin/MadGraph5_aMCatNLO/WRtoNLtoLLJJ_WR5500N1400_NLO_tarfile
+RequestCpus = 3
+RequestMemory = 16000
+queue 

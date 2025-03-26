@@ -1,36 +1,5 @@
-condor_submit WR1000N100_NLO.jds
-condor_submit WR1000N500_NLO.jds
-condor_submit WR1000N900_NLO.jds
-condor_submit WR1500N100_NLO.jds
-condor_submit WR1500N750_NLO.jds
-condor_submit WR1500N1400_NLO.jds
-condor_submit WR2000N100_NLO.jds
-condor_submit WR2000N1000_NLO.jds
-condor_submit WR2000N1900_NLO.jds
-condor_submit WR2500N100_NLO.jds
-condor_submit WR2500N1250_NLO.jds
-condor_submit WR2500N2400_NLO.jds
-condor_submit WR3000N100_NLO.jds
-condor_submit WR3000N1500_NLO.jds
-condor_submit WR3000N2900_NLO.jds
-condor_submit WR3500N100_NLO.jds
-condor_submit WR3500N1750_NLO.jds
-condor_submit WR3500N3400_NLO.jds
-condor_submit WR4000N100_NLO.jds
-condor_submit WR4000N2000_NLO.jds
-condor_submit WR4000N3900_NLO.jds
-condor_submit WR4500N100_NLO.jds
-condor_submit WR4500N2250_NLO.jds
-condor_submit WR4500N4400_NLO.jds
-condor_submit WR5000N100_NLO.jds
-condor_submit WR5000N2500_NLO.jds
-condor_submit WR5000N4900_NLO.jds
-condor_submit WR5500N100_NLO.jds
-condor_submit WR5500N2750_NLO.jds
-condor_submit WR5500N5400_NLO.jds
-condor_submit WR6000N100_NLO.jds
-condor_submit WR6000N3000_NLO.jds
-condor_submit WR6000N5900_NLO.jds
-condor_submit WR6500N100_NLO.jds
-condor_submit WR6500N3250_NLO.jds
-condor_submit WR6500N6400_NLO.jds
+for WR in $(seq 1000 500 6500); do
+    for N in $(seq 100 100 $((WR - 100))); do
+        condor_submit WR${WR}N${N}_NLO.jds
+    done
+done

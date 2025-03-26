@@ -1,0 +1,11 @@
+executable = /data6/Users/snuintern1/genproductions/bin/MadGraph5_aMCatNLO/gridpack_generation.sh
+arguments = WRtoNLtoLLJJ_WR6000_N5300 /WRtoNLtoLLJJ/cards/LO/WRtoNLtoLLJJ_WR6000_N5300 pdmv
+log = /data6/Users/snuintern1/genproductions/data/job.log
+output = /data6/Users/snuintern1/genproductions/data/job$(process).out
+error = /data6/Users/snuintern1/genproductions/data/job$(process).err
+getenv = True
+should_transfer_files = NO
+initialdir = /data6/Users/snuintern1/genproductions/bin/MadGraph5_aMCatNLO
+RequestCpus = 3
+RequestMemory = 16000
+queue 
