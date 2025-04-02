@@ -17,5 +17,5 @@
 # KFactor ( python ) 
   - folders at K_Factor/
     -projects :
-      1. Kfactor : $\frac{\sigma_{NLO}}{\sigma_{LO}}$ , Codes in https://github.com/Chihwan-An/genproductions
+      1. Kfactor : Making samples & gridpacks , calucates $\frac{\sigma_{NLO}}{\sigma_{LO}}$ , Codes in https://github.com/Chihwan-An/genproductions
   
