@@ -240,3 +240,38 @@ plt.yticks(ticks=tick_indices, labels=tick_labels)
 
 
 plt.savefig("../result/20000event/plot7_kfactor_heatmap.png")
+
+#------------------------- 2d plot xsec
+# Placeholder CSV path (update this with actual file path)
+csv_path = ("../result/20000event/20000_cross_section_summary.csv")  
+df = pd.read_csv(csv_path)
+
+# K-factor 계산
+df = df[df['LO_crosssection'] != 0].copy()
+df['cross_section'] =  df['LO_crosssection']
+
+# 열 이름 정리 (pivot용)
+df = df.rename(columns={'WR': 'WR mass', 'N': 'N mass'})
+
+# 피벗 테이블 생성
+heatmap_data = df.pivot(index='N mass', columns='WR mass', values='cross_section')
+
+# 히트맵 그리기
+# 로그 스케일로 변환 (0 값 방지 위해 작은 수 추가 또는 filter)
+log_heatmap_data = np.log10(heatmap_data)
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(log_heatmap_data, cmap="viridis")
+plt.xlabel("WR mass [GeV]")
+plt.ylabel("N mass [GeV]")
+plt.title("log10(Cross-section [pb])")
+plt.tight_layout()
+plt.gca().invert_yaxis()
+
+# Y축 라벨 재설정
+n_mass_values = heatmap_data.index.values
+tick_indices = [i for i, val in enumerate(n_mass_values) if val % 500 == 0]
+tick_labels = [n_mass_values[i] for i in tick_indices]
+plt.yticks(ticks=tick_indices, labels=tick_labels)
+
+plt.savefig("../result/20000event/plot7_xsec_2dplot_log.png")
